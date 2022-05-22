@@ -1,5 +1,4 @@
 const shortid = require('shortid');
-const validUrl = require('valid-url')
 const validators = require('../validators/validator');
 const urlModel = require('../models/urlModel');
 const redis = require("redis");
@@ -9,14 +8,13 @@ const { promisify } = require("util");
 //Connect to redis
 const redisClient = redis.createClient(
     13598,
-    "redis-13598.c264.ap-south-1-1.ec2.cloud.redislabs.com",
-    { no_ready_check: true }
+    "redis-13598.c264.ap-south-1-1.ec2.cloud.redislabs.com", { no_ready_check: true }
 );
-redisClient.auth("eB9Kuc7GO1mN1wHoM6NnfP23CFQjbGqp", function (err) {
+redisClient.auth("eB9Kuc7GO1mN1wHoM6NnfP23CFQjbGqp", function(err) {
     if (err) throw err;
 });
 
-redisClient.on("connect", async function () {
+redisClient.on("connect", async function() {
     console.log("Connected to Redis..");
 });
 
@@ -26,7 +24,7 @@ redisClient.on("connect", async function () {
 const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
-const createShortUrl = async function (req, res) {
+const createShortUrl = async function(req, res) {
 
     try {
 
@@ -49,10 +47,8 @@ const createShortUrl = async function (req, res) {
         let response = JSON.parse(isDataPresent)
         if (response) {
             console.log("data is from cache")
-            return res.status(200).send({ status: true, message:"you have already created Short Url For this long url",data: response })
-        }
-
-        else {
+            return res.status(200).send({ status: true, message: "you have already created Short Url For this long url", data: response })
+        } else {
             const urlCode = shortid.generate().toLowerCase()
 
             // let checkUrl = await urlModel.findOne({ longUrl: data.longUrl })
@@ -77,16 +73,15 @@ const createShortUrl = async function (req, res) {
     }
 }
 
-
 //******************************************Get API**************************************************//
 
-const redirectUrl = async function (req, res) {
- 
+const redirectUrl = async function(req, res) {
+
     try {
         let urlCode = req.params.urlCode
 
-        if(!shortid.isValid(urlCode)){
-            return res.status(400).send({status:false , msg : " Invalid Url"})
+        if (!shortid.isValid(urlCode)) {
+            return res.status(400).send({ status: false, msg: " Invalid Url" })
         }
 
         let cachedurlCodedata = await GET_ASYNC(`${urlCode}`)
@@ -95,9 +90,8 @@ const redirectUrl = async function (req, res) {
 
         if (response1) {
             console.log("Data is from Cache")
-            return res.status(302).redirect(response1.longUrl )
-        }
-        else {
+            return res.status(302).redirect(response1.longUrl)
+        } else {
 
             let url = await urlModel.findOne({ urlCode: urlCode })
 
@@ -118,8 +112,5 @@ const redirectUrl = async function (req, res) {
         res.status(500).send({ status: false, message: err.message });
     }
 }
-
-
-
 module.exports.createShortUrl = createShortUrl
 module.exports.redirectUrl = redirectUrl
