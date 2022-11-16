@@ -1,5 +1,38 @@
 # Uranium
 
+
+Project 4 → URL Shortner
+Project Overview → In this project we were required to implement the backend part of URL Shortner .
+
+Problem Statements → It consist of total 1 Single Model (URl-Model)
+
+URL-Model→ It consist of 2 API’s (1-Post , 1-Get)
+
+Used Appropriate Status code 
+
+Approach —>
+● Before starting the project we downloaded different dependencies.
+● Dependencies like —>
+○ Express→ (This will help us in creating different api endpoints),
+○ Mongoose→ (This will help us to work with mongodb easily)
+○ Nodemon→ (This will help us in restarting the node application whenever
+some changes(even the minute change) in the files are noticed in the
+directory)
+
+● Then we created SRC folder where all other sub folders are stored in a
+hierarchical manner.We have created Sub folders like Models, routes, Validators.
+Controller.
+
+● Initiated the project by creating Schemas for URL , then with the
+further continuation we have stored end points in route files. Basically route file is
+created for storing all the end points .
+
+● In controller folder ,we have created files for URL where it has
+their respective API’s . In this folder we have wrote all the functions that were
+supposed to perform.
+
+
+*******************************************************************************************************************************************************
 ## Scalable URL Shortner Project Requirement
 
 ## Phase I
